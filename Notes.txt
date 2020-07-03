@@ -1,0 +1,45 @@
+Notes:
+
+222,337 Haskell
+757,821 Haskell
+
+https://github.com/search?q=%22Integer%22+extension%3A.hs+language%3AHaskell&type=Code&ref=advsearch&l=&l=
+https://github.com/search?l=&p=100&q=%22Int%22+extension%3A.hs+language%3AHaskell&ref=advsearch&type=Code
+
+Implémentation:
+
+Différence entre types lifted vs unlifted (boxed vs unboxed).
+
+Int:
+  data Int = I# Int#
+
+  Int# correspond à un Int unboxé, alors Int correspond
+  à un Int boxé.
+
+Integer:
+  data Integer  = S#                 !Int#
+                | Jp# {-# UNPACK #-} !BigNat
+                | Jn# {-# UNPACK #-} !BigNat
+
+  data BigNat = BN# ByteArray#
+
+
+fibInt :: Int -> Int
+fibInt n | n < 2 = n
+         | True  = fibInt (n - 1) + fibInt (n - 2)
+
+
+Int vs Integer
+
+- Int is 64bits, which is large enough for most use cases
+
+- Most Ints are bounded by memory size
+
+- The base library mostly uses Int
+
+- Integers are much slower
+
+- Haskell doesn't have implicit conversion, so mixing Ints with Integers is a pain.
+
+Historiquement:
+  Langage d'abord paresseux, système de types nécessaire pour supporter ce mode d'évaluation
